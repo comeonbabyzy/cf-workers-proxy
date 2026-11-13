@@ -1,0 +1,5 @@
+name = "muse-proxy"
+main = "_worker.js"
+compatibility_date = "2024-07-26"
+[vars]
+PROXY_HOSTNAME = "muse.ai"

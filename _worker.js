@@ -8,6 +8,13 @@ function logError(request, message) {
 
 function createNewRequest(request, url, proxyHostname, originHostname) {
   const newRequestHeaders = new Headers(request.headers);
+  // Hide the real client IP: strip headers that would reveal it to the origin.
+  // The origin will then only see the Cloudflare edge IP as the TCP source.
+  newRequestHeaders.delete('cf-connecting-ip');
+  newRequestHeaders.delete('x-real-ip');
+  newRequestHeaders.delete('x-forwarded-for');
+  newRequestHeaders.delete('true-client-ip');
+  newRequestHeaders.delete('x-client-ip');
   for (const [key, value] of newRequestHeaders) {
     if (value.includes(originHostname)) {
       newRequestHeaders.set(
